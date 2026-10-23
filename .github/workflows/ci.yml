@@ -40,6 +40,27 @@ jobs:
           context: .
           push: false
           tags: tasks-api:ci
+          #adding Trivy for security check
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: tasks-api:ci
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          image-ref: tasks-api:ci
+          format: table
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+          exit-code: '0'
 
 
 
