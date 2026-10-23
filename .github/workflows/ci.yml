@@ -7,9 +7,12 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
-  test:
-    name: Test Tasks API
+  test-and-build:
+    name: Test and build Docker image
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +26,50 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Check JavaScript syntax
         run: node --check server.js
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: tasks-api:ci
+
+
+
+
+
+# name: Tasks API CI
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+
+# jobs:
+#   test:
+#     name: Test Tasks API
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v4
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#           cache: npm
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Check JavaScript syntax
+#         run: node --check server.js
