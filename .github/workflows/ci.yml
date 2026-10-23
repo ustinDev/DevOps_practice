@@ -1,3 +1,4 @@
+
 name: Tasks API CI
 
 on:
@@ -38,9 +39,9 @@ jobs:
         with:
           context: .
           push: false
-          load: true
           tags: tasks-api:ci
-
+          #adding Trivy for security check
+          
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@v0.35.0
         with:
@@ -49,8 +50,6 @@ jobs:
           vuln-type: os,library
           severity: HIGH,CRITICAL
           exit-code: '0'
-
-
 
 
 
@@ -82,3 +81,66 @@ jobs:
 
 #       - name: Check JavaScript syntax
 #         run: node --check server.js
+
+
+
+
+
+
+
+
+
+
+# Just incase the up didnot work
+
+# name: Tasks API CI
+
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
+
+# permissions:
+#   contents: read
+
+# jobs:
+#   test-and-build:
+#     name: Test and build Docker image
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v4
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#           cache: npm
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Check JavaScript syntax
+#         run: node --check server.js
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
+
+#       - name: Build Docker image
+#         uses: docker/build-push-action@v6
+#         with:
+#           context: .
+#           push: false
+#           load: true
+#           tags: tasks-api:ci
+
+#       - name: Scan Docker image with Trivy
+#         uses: aquasecurity/trivy-action@v0.35.0
+#         with:
+#           image-ref: tasks-api:ci
+#           format: table
+#           vuln-type: os,library
+#           severity: HIGH,CRITICAL
+#           exit-code: '0'
