@@ -42,8 +42,7 @@ jobs:
           tags: tasks-api:ci
 
       - name: Scan Docker image with Trivy
-        # Pin to a full commit SHA; replace <sha> with the SHA of the release you choose
-        uses: aquasecurity/trivy-action@<sha> # v0.35.0 or newer
+        uses: aquasecurity/trivy-action@v0.35.0
         with:
           image-ref: tasks-api:ci
           format: table
